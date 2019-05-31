@@ -75,7 +75,7 @@ set_log_bucket_retention:
 
 lock_bucket:
 	@$(call MESSAGE, Now$(,) we will lock the retention policy on the WORM bucket.\
-	NOTE: You will not be able to delete this bucket until all objects within it \
+	NOTE: THIS ACTION IS IRREVERSIBLE. You will not be able to delete this bucket until all objects within it \
 	are at least $(RETENTION_TIME) old.)
 	@$(CHECK_CONTINUE) 
 	gsutil retention lock gs://$(WORM_BUCKET_NAME)
@@ -83,7 +83,7 @@ lock_bucket:
 
 lock_log_bucket:
 	@$(call MESSAGE, Finally$(,) we will lock the retention policy on the WORM *logs* bucket.\
-	NOTE: You will not be able to delete this bucket until all objects within it \
+	NOTE: THIS ACTION IS IRREVERSIBLE. You will not be able to delete this bucket until all objects within it \
 	are at least $(RETENTION_TIME) old.)
 	@$(CHECK_CONTINUE) 
 	gsutil retention lock gs://$(WORM_LOG_BUCKET_NAME)
@@ -103,6 +103,6 @@ delete_test_object:
 delete_buckets:
 	@$(call MESSAGE, Going to try to delete the WORM and WORM log buckets.)
 	@$(CHECK_CONTINUE)
-	gsutil rb gs://$(WORM_LOG_BUCKET_NAME)
-	gsutil rb gs://$(WORM_BUCKET_NAME)
+	gsutil rm -r gs://$(WORM_LOG_BUCKET_NAME)
+	gsutil rm -r gs://$(WORM_BUCKET_NAME)
 	@$(call MESSAGE, Success!)
